@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import twitter4j.Status;
+import twitter4j.TwitterException;
 
 import java.util.List;
 import java.util.Map;
@@ -25,6 +27,16 @@ public class TwitterController {
     public Map<String, List<Tweet>> getTrendsByCountry(@RequestParam(defaultValue = "ww") String id,
                                                        @RequestParam(defaultValue = "100") String count) {
         return twitterService.getTrendTweetsByCountry(id, count);
+    }
+
+    @GetMapping(value = "/getTweetsFromIstanbul")
+    public List<Tweet> getTweets () {
+        return twitterService.getTweetByLocation();
+    }
+
+    @GetMapping(value = "/getTweets4j")
+    public List<Status> getTweets4j () throws TwitterException {
+        return twitterService.getTweets();
     }
 
 }

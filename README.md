@@ -1,2 +1,3 @@
 # tweet-map
-tweets on map
+
+Store tweets on mongodb
