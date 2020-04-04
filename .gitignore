@@ -26,4 +26,5 @@ buildNumber.properties
 HELP.md
 *.iml
 *.py
-application.properties
+*.properties
+/logs/

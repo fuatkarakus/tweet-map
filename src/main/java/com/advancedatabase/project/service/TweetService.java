@@ -17,38 +17,45 @@ import java.util.Map;
 
 @Slf4j
 @Service
-public class TwitterService {
+public class TweetService {
 
     @Autowired
     private Twitter twitter;
 
     @Autowired
-    twitter4j.Twitter twitter4j;
+    private twitter4j.Twitter twitter4j;
 
     @Autowired
     private TweetRepository tweetRepository;
 
+    public List<Location> getLocations() throws TwitterException {
+
+        return  twitter4j.getAvailableTrends();
+
+    }
+
     public List<Tweet> getTweetByLocation () {
-        SearchResults results;
-        results = twitter.searchOperations().search(
+
+        SearchResults results = twitter.searchOperations().search(
                 new SearchParameters("")
                         //istanbul geocode
-                        .geoCode(new GeoCode(41.01224, 28.976018, 100, GeoCode.Unit.KILOMETER))
+                        .geoCode(new GeoCode(41.01224, 28.976018,
+                                100, GeoCode.Unit.KILOMETER))
                         .resultType(SearchParameters.ResultType.RECENT)
                         .count(10)
                         .includeEntities(false));
 
         return results.getTweets();
+
     }
 
     public List<Status> getTweets() throws TwitterException {
 
-        Query query = new Query()
-                .geoCode(new GeoLocation(41.01224, 28.976018),
-                10, Query.Unit.km)
-                .count(50); //You can also set the number of tweets to return per page, up to a max of 100
-
-        return twitter4j.search(query).getTweets();
+        return twitter4j.search(new Query()
+                                    .geoCode(new GeoLocation(41.01224, 28.976018),
+                                    10, Query.Unit.km)
+                                    .count(50)) //You can also set the number of tweets to return per page, up to a max of 100
+                        .getTweets();
 
     }
 

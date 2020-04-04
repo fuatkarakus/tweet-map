@@ -1,6 +1,6 @@
 package com.advancedatabase.project.controller;
 
-import com.advancedatabase.project.service.TwitterService;
+import com.advancedatabase.project.service.TweetService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import twitter4j.Status;
 import twitter4j.TwitterException;
+import twitter4j.Location;
 
 import java.util.List;
 import java.util.Map;
@@ -18,25 +19,29 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping(value = "/api", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-public class TwitterController {
+public class TweetController {
 
     @Autowired
-    TwitterService twitterService;
+    TweetService tweetService;
 
     @GetMapping(value = "/getTrends")
     public Map<String, List<Tweet>> getTrendsByCountry(@RequestParam(defaultValue = "ww") String id,
                                                        @RequestParam(defaultValue = "100") String count) {
-        return twitterService.getTrendTweetsByCountry(id, count);
+        return tweetService.getTrendTweetsByCountry(id, count);
     }
 
     @GetMapping(value = "/getTweetsFromIstanbul")
     public List<Tweet> getTweets () {
-        return twitterService.getTweetByLocation();
+        return tweetService.getTweetByLocation();
     }
 
     @GetMapping(value = "/getTweets4j")
     public List<Status> getTweets4j () throws TwitterException {
-        return twitterService.getTweets();
+        return tweetService.getTweets();
     }
 
+    @GetMapping(value = "/getLocations")
+    public List<Location> getLocations() throws TwitterException {
+        return tweetService.getLocations();
+    }
 }
