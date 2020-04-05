@@ -1,5 +1,6 @@
 package com.advancedatabase.project.service;
 
+import com.advancedatabase.project.repository.StatusRepository;
 import com.advancedatabase.project.repository.TweetRepository;
 import com.advancedatabase.project.util.CountryWOEID;
 import lombok.extern.slf4j.Slf4j;
@@ -19,14 +20,26 @@ import java.util.Map;
 @Service
 public class TweetService {
 
-    @Autowired
     private Twitter twitter;
 
-    @Autowired
     private twitter4j.Twitter twitter4j;
 
-    @Autowired
     private TweetRepository tweetRepository;
+
+    private StatusRepository statusRepository;
+
+    @Autowired
+    TweetService(Twitter twitter, twitter4j.Twitter twitter4j,
+                 TweetRepository tweetRepository, StatusRepository statusRepository) {
+        this.twitter = twitter;
+        this.twitter4j = twitter4j;
+        this.tweetRepository = tweetRepository;
+        this.statusRepository = statusRepository;
+    }
+
+    public void saveStatus(Status status) {
+        statusRepository.save(status);
+    }
 
     public List<Location> getLocations() throws TwitterException {
 
@@ -54,8 +67,10 @@ public class TweetService {
         return twitter4j.search(new Query()
                                     .geoCode(new GeoLocation(41.01224, 28.976018),
                                     10, Query.Unit.km)
-                                    .count(50)) //You can also set the number of tweets to return per page, up to a max of 100
+                                    .count(50))
+                //You can also set the number of tweets to return per page, up to a max of 100
                         .getTweets();
+                // filter("has:geo, 37.781157,-122.398720,1mi")
 
     }
 
