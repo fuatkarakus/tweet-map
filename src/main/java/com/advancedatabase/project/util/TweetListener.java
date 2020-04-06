@@ -2,21 +2,24 @@ package com.advancedatabase.project.util;
 
 import com.advancedatabase.project.service.TweetService;
 import lombok.extern.slf4j.Slf4j;
-import twitter4j.*;
+import twitter4j.StallWarning;
+import twitter4j.Status;
+import twitter4j.StatusDeletionNotice;
+import twitter4j.StatusListener;
 
 @Slf4j
-public class CustomStatusListener implements StatusListener {
+public class TweetListener implements StatusListener {
 
     private TweetService tweetService;
 
-    public CustomStatusListener (TweetService tweetService) {
+    public TweetListener(TweetService tweetService) {
         this.tweetService = tweetService;
     }
 
     @Override
     public void onStatus(Status status) {
-        log.info("Upcoming tweet {}", status.getText());
         tweetService.saveStatus(status);
+        log.info("Saved tweet id - {}", status.getId());
     }
 
     @Override
@@ -42,6 +45,5 @@ public class CustomStatusListener implements StatusListener {
     @Override
     public void onException(Exception e) {
         log.error("Error -  {}", e);
-
     }
 }

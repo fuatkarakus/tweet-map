@@ -2,7 +2,7 @@ package com.advancedatabase.project.service;
 
 import com.advancedatabase.project.repository.StatusRepository;
 import com.advancedatabase.project.repository.TweetRepository;
-import com.advancedatabase.project.util.CountryWOEID;
+import com.advancedatabase.project.util.enums.CountryWOEID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.twitter.api.*;

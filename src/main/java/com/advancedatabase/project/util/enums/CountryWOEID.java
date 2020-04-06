@@ -1,4 +1,4 @@
-package com.advancedatabase.project.util;
+package com.advancedatabase.project.util.enums;
 
 public enum CountryWOEID {
 
