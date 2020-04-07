@@ -1,9 +1,8 @@
 package com.advancedatabase.project.service;
 
-import com.advancedatabase.project.model.Location;
+import com.advancedatabase.project.model.TweetFilter;
 import com.advancedatabase.project.util.ConverterUtil;
 import com.advancedatabase.project.util.TweetCollector;
-import com.advancedatabase.project.util.TweetListener;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -32,24 +31,12 @@ public class CollectorService {
     public void runCollectors() throws IOException {
         log.info("Starting collectors... ");
 
-        ExecutorService executorService = Executors.newFixedThreadPool(4);
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-        List<Location> locations =  ConverterUtil.getStaticLocations();
+        List<TweetFilter> tweetFilters =  ConverterUtil.getStaticLocations();
 
-        int idx = 0;
+        TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
 
-        for (Location location: locations){
-
-            TweetListener listener = new TweetListener(tweetService);
-
-            TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
-
-            log.info("-- {} -- city starting...", location.getName());
-            executorService.submit(new TweetCollector(twitterStream, listener,
-                    ConverterUtil.getMatrixOfLocation(location), idx));
-
-            idx++;
-
-        }
+        executorService.submit(new TweetCollector(twitterStream, tweetService, tweetFilters));
     }
 }

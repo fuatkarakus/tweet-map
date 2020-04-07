@@ -16,17 +16,21 @@ Used technologies:
 
 #### Stream filters
 
-Check resources file `location.json` and add where you want.
+Check resources file `tweetFilter.json` and add where you want.
 
 For example:
 ```
 {
     "name": "New York",
+    "track": [
+      "#covid19",
+      "#trump"
+    ],
     "coordinate": [
       [74,40],
       [-73,41]
     ]
-  }
+ }
 ```
 > Bounding Box:
 >

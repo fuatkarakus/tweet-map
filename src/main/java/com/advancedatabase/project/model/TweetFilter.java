@@ -9,10 +9,12 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Location {
+public class TweetFilter {
 
     String name;
 
     List<List<Double>> coordinate;
+
+    List<String> track;
 
 }

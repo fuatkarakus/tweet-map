@@ -1,35 +1,39 @@
 package com.advancedatabase.project.util;
 
+import com.advancedatabase.project.model.TweetFilter;
+import com.advancedatabase.project.service.TweetService;
 import lombok.extern.slf4j.Slf4j;
-import twitter4j.FilterQuery;
-import twitter4j.TwitterStream;
+import twitter4j.*;
+
+import java.util.List;
 
 @Slf4j
 public class TweetCollector implements Runnable{
 
     private TwitterStream twitterStream;
 
-    private TweetListener tweetListener;
+    TweetService tweetService;
 
-    private double[][] boundary;
+    private List<TweetFilter> tweetFilters;
 
-    private int threadNo;
-
-    public TweetCollector(TwitterStream twitterStream, TweetListener tweetListener,
-                          double[][] boundary, int threadNo) {
+    public TweetCollector(TwitterStream twitterStream, TweetService tweetService, List<TweetFilter> tweetFilters) {
         this.twitterStream = twitterStream;
-        this.tweetListener = tweetListener;
-        this.boundary = boundary;
-        this.threadNo = threadNo;
+        this.tweetService = tweetService;
+        this.tweetFilters = tweetFilters;
     }
 
     @Override
     public void run() {
-        log.info("Thread - {} - started the task... ", threadNo);
-        twitterStream.addListener(tweetListener)
-                .filter(
-                        new FilterQuery()
-                        .locations(boundary)
-                );
+
+        twitterStream.addListener(new TweetListener(tweetService));
+
+        for (TweetFilter tweetFilter : tweetFilters) {
+
+            FilterQuery filterQuery = new FilterQuery(ConverterUtil.getTracksAsArray(tweetFilter))
+                    .locations(ConverterUtil.getMatrixOfLocation(tweetFilter));
+
+            twitterStream .filter(filterQuery);
+        }
+
     }
 }

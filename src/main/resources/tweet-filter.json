@@ -1,6 +1,10 @@
 [
   {
     "name": "New York",
+    "track": [
+      "#covid19",
+      "#trump"
+    ],
     "coordinate": [
       [74,40],
       [-73,41]
@@ -8,6 +12,10 @@
   },
   {
     "name": "Istanbul",
+    "track": [
+      "#covid19",
+      "#trumo"
+    ],
     "coordinate": [
       [-40.562500,28.448674],
       [-41.562500,29.448674]
@@ -15,6 +23,10 @@
   },
   {
     "name": "San Francisco",
+    "track": [
+      "#covid19",
+      "#trumo"
+    ],
     "coordinate": [
       [-122.75,36.8],
       [-121.75,37.8]
