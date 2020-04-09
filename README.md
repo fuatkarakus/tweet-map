@@ -43,5 +43,7 @@ For example:
 
 `mvn spring-boot:run`
 
+Navigate `localhost:8080`
+
 You can get know more about Twitter Streaming API here:
  * https://developer.twitter.com/en/docs/tweets/filter-realtime/guides/basic-stream-parameters
