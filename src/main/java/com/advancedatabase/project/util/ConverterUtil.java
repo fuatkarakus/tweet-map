@@ -14,7 +14,7 @@ public abstract class ConverterUtil {
 
     private ConverterUtil() {}
 
-    public static final String LOCATION_JSON_FILE = "tweet-filter.json";
+    public static final String FILTER_JSON = "tweet-filter.json";
 
     public static String getResourceJson(String fileName) throws IOException {
         File file = ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + fileName);
@@ -22,7 +22,7 @@ public abstract class ConverterUtil {
     }
 
     public static List<TweetFilter> getStaticLocations() throws IOException {
-        String locationJson = getResourceJson(LOCATION_JSON_FILE);
+        String locationJson = getResourceJson(FILTER_JSON);
         ObjectMapper mapper = new ObjectMapper();
         return Arrays.asList(mapper.readValue(locationJson, TweetFilter[].class));
     }
