@@ -1,6 +1,7 @@
 # tweet-map
 
-This application is capable save Tweets on MongoDb using Twitter Streaming API.
+![alt text](ss.png)
+This application is capable save Tweets on MongoDb using Twitter API and locates on Google Maps.
 
 Used technologies:
 
