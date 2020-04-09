@@ -19,7 +19,7 @@ public class TweetListener implements StatusListener {
     @Override
     public void onStatus(Status status) {
         tweetService.saveStatus(status);
-        log.info("Saved tweet id - {}", status.getId());
+        log.debug("Saved tweet id - {}", status.getId());
     }
 
     @Override

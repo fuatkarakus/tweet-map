@@ -28,7 +28,7 @@ public class TweetController {
     }
 
     @GetMapping(value = "/first")
-    public List<Tweet> not() {
+    public List<Tweet> findAllGeoEnabledTweet() {
         return tweetService.findTweetGeoIsNotNull();
     }
 

@@ -400,6 +400,7 @@
 
         //Geo distance search by clicking a point on the map
         map.addListener('click', function(e) {
+            console.log("geosearch_enabled"+ geosearch_enabled);
             if (!geosearch_enabled) {
                 return;
             }
