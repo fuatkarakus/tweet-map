@@ -6,6 +6,7 @@ import com.advancedatabase.project.repository.TweetRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.geo.*;
 import org.springframework.stereotype.Service;
 import twitter4j.*;
 
@@ -30,6 +31,22 @@ public class TweetService {
 
     public void saveStatus(Status status) {
         statusRepository.save(status);
+    }
+
+    public List<Tweet> findTweetsInCircle(Double lat, Double log, Double dist) {
+        return tweetRepository.findByGeoLocationWithin(
+                new Circle(
+                    new Point(lat, log),
+                    new Distance(dist, Metrics.KILOMETERS)));
+    }
+
+    public List<Tweet> findTweetsInPolygon(Double lat, Double log) {
+        Polygon points = new Polygon(
+                new Point(lat, log),
+                new Point(lat, log),
+                new Point(lat, log)
+        );
+        return tweetRepository.findByGeoLocationWithin(points);
     }
 
     public List<Tweet> findByKeyword(String key) {

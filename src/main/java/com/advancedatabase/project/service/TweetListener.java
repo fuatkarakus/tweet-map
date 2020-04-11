@@ -1,6 +1,5 @@
-package com.advancedatabase.project.util;
+package com.advancedatabase.project.service;
 
-import com.advancedatabase.project.service.TweetService;
 import lombok.extern.slf4j.Slf4j;
 import twitter4j.StallWarning;
 import twitter4j.Status;
@@ -19,7 +18,6 @@ public class TweetListener implements StatusListener {
     @Override
     public void onStatus(Status status) {
         tweetService.saveStatus(status);
-        log.debug("Saved tweet id - {}", status.getId());
     }
 
     @Override

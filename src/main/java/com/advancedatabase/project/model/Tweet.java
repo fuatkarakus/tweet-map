@@ -1,13 +1,18 @@
 package com.advancedatabase.project.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.mongodb.lang.NonNull;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.geo.Point;
+import org.springframework.data.mongodb.core.index.GeoSpatialIndexType;
+import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
+import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
 import twitter4j.GeoLocation;
+import twitter4j.Place;
 
 import java.util.Date;
 
@@ -22,10 +27,10 @@ public class Tweet {
     @Field("user.screenName")
     String name;
 
-    @Indexed
+    @TextIndexed
     String text;
 
-    @Indexed
+    @GeoSpatialIndexed
     GeoLocation geoLocation;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
@@ -34,5 +39,8 @@ public class Tweet {
 
     @Field("user.profileImageUrl")
     String profileImageUrl;
+
+    @Field("place.fullName")
+    String place;
 
 }

@@ -10,9 +10,9 @@ import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class ConverterUtil {
+public abstract class TweetUtil {
 
-    private ConverterUtil() {}
+    private TweetUtil() {}
 
     public static final String FILTER_JSON = "tweet-filter.json";
 

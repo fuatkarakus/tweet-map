@@ -1,8 +1,7 @@
 package com.advancedatabase.project.service;
 
 import com.advancedatabase.project.model.TweetFilter;
-import com.advancedatabase.project.util.ConverterUtil;
-import com.advancedatabase.project.util.TweetCollector;
+import com.advancedatabase.project.util.TweetUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -33,7 +32,7 @@ public class CollectorService {
 
         ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-        List<TweetFilter> tweetFilters =  ConverterUtil.getStaticLocations();
+        List<TweetFilter> tweetFilters =  TweetUtil.getStaticLocations();
 
         TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
 

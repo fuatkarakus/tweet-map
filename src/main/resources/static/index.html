@@ -417,7 +417,7 @@
             updateCount(lastTweetCount, tweetCount);
             $.ajax({
                 type: "POST",
-                url: '/api/distance',
+                url: '/api/distance', // TODO make it search with distance
                 data: {location, distance},
                 dataType: "json",
                 success: function(data) {
@@ -562,7 +562,7 @@
     }
     function firstFetch(map, markerCluster) {
         $.ajax({
-            url: '/api/first/',
+            url: '/api/search/',
             success: function(data) {
                 tweetCount += data.length;
                 var locs = data;

@@ -1,9 +1,10 @@
-package com.advancedatabase.project.util;
+package com.advancedatabase.project.service;
 
 import com.advancedatabase.project.model.TweetFilter;
-import com.advancedatabase.project.service.TweetService;
+import com.advancedatabase.project.util.TweetUtil;
 import lombok.extern.slf4j.Slf4j;
-import twitter4j.*;
+import twitter4j.FilterQuery;
+import twitter4j.TwitterStream;
 
 import java.util.List;
 
@@ -29,8 +30,8 @@ public class TweetCollector implements Runnable{
 
         for (TweetFilter tweetFilter : tweetFilters) {
 
-            FilterQuery filterQuery = new FilterQuery(ConverterUtil.getTracksAsArray(tweetFilter))
-                    .locations(ConverterUtil.getMatrixOfLocation(tweetFilter));
+            FilterQuery filterQuery = new FilterQuery(TweetUtil.getTracksAsArray(tweetFilter))
+                    .locations(TweetUtil.getMatrixOfLocation(tweetFilter));
 
             twitterStream .filter(filterQuery);
         }
