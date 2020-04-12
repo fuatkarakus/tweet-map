@@ -32,7 +32,7 @@ public class StatsFilter implements Filter {
             chain.doFilter(req, resp);
         } finally {
             time = System.currentTimeMillis() - time;
-            LOGGER.trace("URI {}: RESPONSE TIME {} ms ", ((HttpServletRequest) req).getRequestURI(),
+            LOGGER.trace("URI {}: RESPONSE TIME {} seconds ", ((HttpServletRequest) req).getRequestURI(),
                     TimeUnit.MILLISECONDS.toSeconds(time));
         }
     }

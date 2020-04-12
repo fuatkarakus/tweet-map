@@ -5,6 +5,7 @@ import com.advancedatabase.project.repository.StatusRepository;
 import com.advancedatabase.project.repository.TweetRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.geo.*;
 import org.springframework.stereotype.Service;
@@ -66,11 +67,16 @@ public class TweetService {
     }
 
     public List<Tweet> findTweetGeoIsNotNull() {
-        return tweetRepository.findByGeoLocationIsNotNull();
+        List<Tweet> tweets = tweetRepository.findByGeoLocationIsNotNull();
+        log.info("TWEET SIZE -- {}", tweets.size());
+        return tweets;
     }
 
+    @Cacheable("TweetGeoNotNull")
     public List<Tweet> findTweetGeoNotNull() {
-        return tweetRepository.findByGeoLocationNotNull();
+        List<Tweet> tweets = tweetRepository.findByGeoLocationNotNull();
+        log.info("TWEET SIZE -- {}", tweets.size());
+        return tweets;
     }
 
     public List<Location> getLocations() throws TwitterException {

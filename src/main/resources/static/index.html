@@ -335,7 +335,7 @@
                 },
                 dataType: "json",
                 success: function(data) {
-                    console.log('response -- '+data);
+                    console.log('response -- '+ data.length);
 
                     for (var i in data) {
                         var tweet = data[i];
@@ -364,7 +364,7 @@
                     updateCount(lastTweetCount, tweetCount);
                 },
                 error: function(data) {
-                    console.log("error: " + data);
+                    console.log("error: " + JSON.stringify(data));
                 }
             });
 
@@ -417,7 +417,7 @@
             updateCount(lastTweetCount, tweetCount);
             $.ajax({
                 type: "POST",
-                url: '/api/distance', // TODO make it search with distance
+                url: '/api/search', // TODO make it search with distance
                 data: {location, distance},
                 dataType: "json",
                 success: function(data) {
@@ -564,6 +564,8 @@
         $.ajax({
             url: '/api/search/',
             success: function(data) {
+                console.log("/api/search/ response : " + data.length);
+                console.log("tweetCount : " + tweetCount);
                 tweetCount += data.length;
                 var locs = data;
                 for (var i = 0; i < locs.length; i++) {
@@ -593,7 +595,6 @@
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyADVvnA5fYL4ecja-sl3JC0JraDFaU2iRE&language=en&callback=initMap&">
 </script>
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </body>
