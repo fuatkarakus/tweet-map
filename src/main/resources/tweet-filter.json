@@ -3,7 +3,8 @@
     "name": "New York",
     "track": [
       "#covid19",
-      "#trump"
+      "#trump",
+      "#coronavirus"
     ],
     "coordinate": [
       [74,40],
@@ -14,18 +15,20 @@
     "name": "Istanbul",
     "track": [
       "#covid19",
-      "#trumo"
+      "#trump",
+      "#coronavirus"
     ],
     "coordinate": [
-      [-40.562500,28.448674],
-      [-41.562500,29.448674]
+      [41.01224,28.448674],
+      [42.01224,29.448674]
     ]
   },
   {
     "name": "San Francisco",
     "track": [
       "#covid19",
-      "#trumo"
+      "#trump",
+      "#coronavirus"
     ],
     "coordinate": [
       [-122.75,36.8],

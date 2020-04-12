@@ -33,7 +33,7 @@ public class TweetCollector implements Runnable{
             FilterQuery filterQuery = new FilterQuery(TweetUtil.getTracksAsArray(tweetFilter))
                     .locations(TweetUtil.getMatrixOfLocation(tweetFilter));
 
-            twitterStream .filter(filterQuery);
+            twitterStream.filter(filterQuery);
         }
 
     }

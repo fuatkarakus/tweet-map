@@ -33,20 +33,28 @@ public class TweetService {
         statusRepository.save(status);
     }
 
-    public List<Tweet> findTweetsInCircle(Double lat, Double log, Double dist) {
-        return tweetRepository.findByGeoLocationWithin(
-                new Circle(
-                    new Point(lat, log),
-                    new Distance(dist, Metrics.KILOMETERS)));
+    public List<Tweet> findTweetsInCircle(Circle circle) {
+        return tweetRepository.findByGeoLocationWithin(circle);
     }
 
-    public List<Tweet> findTweetsInPolygon(Double lat, Double log) {
-        Polygon points = new Polygon(
-                new Point(lat, log),
-                new Point(lat, log),
-                new Point(lat, log)
-        );
+    public List<Tweet> findTweetsInPolygon(Polygon points) {
         return tweetRepository.findByGeoLocationWithin(points);
+    }
+
+    public List<Tweet> findTweetsInBox(Box box) {
+        return tweetRepository.findByGeoLocationWithin(box);
+    }
+
+    public List<Tweet> findTweetsInCircleAndKey(Circle circle, String key) {
+        return tweetRepository.findByGeoLocationWithinAndTextLike(circle,key);
+    }
+
+    public List<Tweet> findTweetsInPolygonAndKey(Polygon points, String key) {
+        return tweetRepository.findByGeoLocationWithinAndTextLike(points,key);
+    }
+
+    public List<Tweet> findTweetsInBoxAndKey(Box box, String key) {
+        return tweetRepository.findByGeoLocationWithinAndTextLike(box, key);
     }
 
     public List<Tweet> findByKeyword(String key) {

@@ -18,6 +18,12 @@ public interface TweetRepository extends MongoRepository<Tweet, Long>, CustomTwe
 
     Page<Tweet> findTweetsByGeoLocationIsNotNullOrderByCreatedAtDesc(Pageable pageable);
 
+    List<Tweet> findByGeoLocationWithinAndTextLike(Circle circle, String key);
+
+    List<Tweet> findByGeoLocationWithinAndTextLike(Box box, String key);
+
+    List<Tweet> findByGeoLocationWithinAndTextLike(Polygon polygon, String key);
+
     List<Tweet> findByGeoLocationWithin(Circle circle);
 
     List<Tweet> findByGeoLocationWithin(Box box);

@@ -1,49 +1,93 @@
 package com.advancedatabase.project.controller;
 
 import com.advancedatabase.project.model.Tweet;
-import com.advancedatabase.project.model.request.SearchWithShape;
 import com.advancedatabase.project.service.TweetService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.geo.Box;
+import org.springframework.data.geo.Circle;
+import org.springframework.data.geo.Polygon;
 import org.springframework.web.bind.annotation.*;
 import twitter4j.Location;
 import twitter4j.TwitterException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RestController
 @RequestMapping(value = "/api")
 public class TweetController {
 
-    @Autowired
     TweetService tweetService;
 
+    @Autowired
+    TweetController(TweetService tweetService) {
+        this.tweetService = tweetService;
+    }
+
     @GetMapping(value = "/search")
-    public List<Tweet> search(@RequestParam(required = false) String key) {
-        return tweetService.findByKeyword(key);
+    public List<Tweet> search(@RequestParam Optional<String> key) {
+        if ( key.isPresent() ) {
+            return tweetService.findByKeyword(key.get());
+        } else {
+            return tweetService.findTweetGeoNotNull();
+        }
     }
 
-    @GetMapping(value = "/first")
-    public List<Tweet> findAllGeoEnabledTweet() {
+    @GetMapping(value = "/first") // not necessary
+    public List<Tweet> searchGeoEnabledTweets() {
+
         return tweetService.findTweetGeoIsNotNull();
+
     }
 
-    @GetMapping(value = "/searchCircle")
-    public List<Tweet> findInRectangle(@RequestParam(required = false) String lat,
-                                       @RequestParam(required = false) String lon,
-                                       @RequestParam(required = false) String dist) {
+    @PostMapping(value = "/search/circle")
+    public List<Tweet> searchInCircle(@RequestBody Circle circle) {
 
-        return tweetService.findTweetsInCircle(Double.valueOf(lat), Double.valueOf(lon), Double.valueOf(dist));
+        return tweetService.findTweetsInCircle(circle);
+
     }
 
-//    @GetMapping(value = "/searchPolygon")
-//    public List<Tweet> findInRectangle(@RequestBody ) {
-//        return tweetService.findTweetsInCircle(Double.valueOf(lat), Double.valueOf(lon), Double.valueOf(dist));
-//    }
+    @PostMapping(value = "/search/polygon")
+    public List<Tweet> searchInPolygon(@RequestBody Polygon polygon) {
+
+        return tweetService.findTweetsInPolygon(polygon);
+
+    }
+
+    @PostMapping(value = "/search/box")
+    public List<Tweet> searchInBox(@RequestBody Box box) {
+
+        return tweetService.findTweetsInBox(box);
+
+    }
+
+    @PostMapping(value = "/search/{key}/circle")
+    public List<Tweet> searchInCircle(@PathVariable String key, @RequestBody Circle circle) {
+
+        return tweetService.findTweetsInCircleAndKey(circle, key);
+
+    }
+
+    @PostMapping(value = "/search/{key}/polygon")
+    public List<Tweet> searchInPolygon(@PathVariable String key, @RequestBody Polygon polygon) {
+
+        return tweetService.findTweetsInPolygonAndKey(polygon, key);
+
+    }
+
+    @PostMapping(value = "/search/{key}/box")
+    public List<Tweet> searchInBox(@PathVariable String key, @RequestBody Box box) {
+
+        return tweetService.findTweetsInBoxAndKey(box, key);
+
+    }
 
     @GetMapping(value = "/locations")
     public List<Location> getLocations() throws TwitterException {
+
         return tweetService.getLocations();
+
     }
 }
