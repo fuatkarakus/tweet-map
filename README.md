@@ -47,3 +47,20 @@ Navigate `localhost:8080`
 
 You can get know more about Twitter Streaming API here:
  * https://developer.twitter.com/en/docs/tweets/filter-realtime/guides/basic-stream-parameters
+ 
+ API
+ 
+ ```
+ curl --location --request POST 'http://localhost:8080/api/search/circle' \
+   --header 'Content-Type: application/json' \
+   --data-raw '{
+     "center": {
+       "x": 40,
+       "y": 20
+     },
+     "radius": {
+       "value": 2,
+       "metric": "KILOMETERS"
+     }
+   }'
+```
