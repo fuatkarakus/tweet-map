@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.geo.*;
+import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.stereotype.Service;
 import twitter4j.*;
 
@@ -50,6 +51,11 @@ public class TweetService {
         return tweetRepository.findByGeoLocationWithinAndTextLike(circle,key);
     }
 
+    public List<Tweet> findTweetsInCircleWithTextCriteria(Circle circle, String key) {
+        TextCriteria textCriteria = TextCriteria.forDefaultLanguage().matching(key);
+        return tweetRepository.findByGeoLocationWithin(circle,textCriteria);
+    }
+
     public List<Tweet> findTweetsInPolygonAndKey(Polygon points, String key) {
         return tweetRepository.findByGeoLocationWithinAndTextLike(points,key);
     }
@@ -64,12 +70,6 @@ public class TweetService {
 
     public List<Tweet> findLatestTweet() {
         return tweetRepository.findTweetsByGeoLocationIsNotNullOrderByCreatedAtDesc(PageRequest.of(0,10)).getContent();
-    }
-
-    public List<Tweet> findTweetGeoIsNotNull() {
-        List<Tweet> tweets = tweetRepository.findByGeoLocationIsNotNull();
-        log.info("TWEET SIZE -- {}", tweets.size());
-        return tweets;
     }
 
     @Cacheable("TweetGeoNotNull")

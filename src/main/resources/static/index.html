@@ -215,26 +215,29 @@
 <div id="control-block">
     <form id="search-form">
         <input type="text" id="searchbox" placeholder="Search tweets...", method="POST">
-    </form>
 
-    <div id="distance-options">
-        <div>
-            <label for="radiusInput">Distance</label>
-            <input type="number" value="1000" min="0" id="radius-input" name="radiusInput" autofocus="">
-            <div id="units">
-                <select id="unit-selector" name="unitSelector">
-                    <option value="km">Kilometers</option>
-                    <option value="m">Meters</option>
-                </select>
+        <div id="distance-options">
+            <div>
+                <label for="radiusInput">Distance</label>
+                <input type="number" value="1000" min="0" id="radius-input" name="radiusInput" autofocus="">
+                <div id="units">
+                    <select id="unit-selector" name="unitSelector">
+                        <option value="km">Kilometers</option>
+                        <option value="m">Meters</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="locate-control">
+                <button id="locate-btn" type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" title="Click to select area on the map">
+                    <span class="glyphicon glyphicon-map-marker"></span> Select Circle
+                </button>
+                <button id="btn-search" type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Click to show tweets on the map">
+                    <span class="glyphicon glyphicon-search"></span> Search Tweets
+                </button>
             </div>
         </div>
-
-        <div id="locate-control">
-            <button id="locate-btn" type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Click to show tweets on the map">
-                <span class="glyphicon glyphicon-map-marker"></span> Geosearch
-            </button>
-        </div>
-    </div>
+    </form>
 
 </div>
 
@@ -274,6 +277,7 @@
         });
     });
 
+    // on label
     function updateCount(last, cur) {
         $('.count').each(function () {
             var $this = $(this);
@@ -304,7 +308,6 @@
         var opt = { minZoom: 2 };
         map.setOptions(opt);
 
-
         map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(tweetsCountDiv);
 
         // Add a marker clusterer to manage the markers.
@@ -314,7 +317,6 @@
         startFetchingTweets(map, markerCluster, 5000, 50000);
 
         updateCount(lastTweetCount, tweetCount);
-
 
         $("#search-form").submit(function(event) {
             event.preventDefault();
@@ -327,6 +329,7 @@
             var keyword = $('#searchbox').val();
             console.log(keyword);
 
+            // TODO change for one form
             $.ajax({
                 type: "GET",
                 url: '/api/search?key='+keyword,
@@ -417,8 +420,17 @@
             updateCount(lastTweetCount, tweetCount);
             $.ajax({
                 type: "POST",
-                url: '/api/search', // TODO make it search with distance
-                data: {location, distance},
+                url: '/api/search/'+ keyword +'/circle',
+                data: {
+                    "center": {
+                        "x": e.latLng.lat(),
+                        "y": e.latLng.lng()
+                    },
+                    "radius": {
+                        "value": distance,
+                        "metric": "KILOMETERS"
+                    }
+                },
                 dataType: "json",
                 success: function(data) {
                     for (var i in data) {
@@ -505,11 +517,6 @@
     function clearCircle() {
         distance_circle.setVisible(false);
     }
-    // function stopStreamingTweets() {
-    //     $.ajax({
-    //         url: '/ajax/stop_tweets/',
-    //     });
-    // }
     function updateCircleRadius(radius) {
         circle_radius = radius;
     }
@@ -519,46 +526,6 @@
     function startFetchingTweets(map, markerCluster, interval, maxtweet) {
         fetching = true;
         firstFetch(map, markerCluster);
-        // (function worker() {
-        //     $.ajax({
-        //         url: '/api/update/',
-        //         success: function(data) {
-        //             if (!fetching) {
-        //                 return;
-        //             }
-        //             tweetCount += data.length;
-        //             var locs = data;
-        //             for (var i = 0; i < locs.length; i++) {
-        //                 var lat = locs[i]["geoLocation"]["latitude"];
-        //                 var lon = locs[i]["geoLocation"]["longitude"];
-        //
-        //                 var latLng = new google.maps.LatLng(lat, lon);
-        //                 var marker = new google.maps.Marker({
-        //                     position: latLng,
-        //                     map: map,
-        //                     draggable: false,
-        //                     // animation: google.maps.Animation.DROP,
-        //
-        //                 });
-        //                 attachMessage(marker, locs[i]);
-        //                 markers.push(marker);
-        //                 markerCluster.addMarker(marker, true);
-        //             }
-        //         },
-        //         complete: function() {
-        //             updateCount(lastTweetCount, tweetCount);
-        //             lastTweetCount = tweetCount;
-        //             if (fetching) {
-        //                 if (tweetCount < maxtweet) {//we allow at most [maxtweet] tweets to be displayed on map
-        //                     setTimeout(worker, interval);//fecth every [interval] seconds
-        //                 } else {
-        //                     // Stop tweets streaming in server
-        //                     // stopStreamingTweets();
-        //                 }
-        //             }
-        //         }
-        //     });
-        // })();
     }
     function firstFetch(map, markerCluster) {
         $.ajax({

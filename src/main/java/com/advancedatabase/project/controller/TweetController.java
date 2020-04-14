@@ -1,5 +1,6 @@
 package com.advancedatabase.project.controller;
 
+import com.advancedatabase.project.model.Search;
 import com.advancedatabase.project.model.Tweet;
 import com.advancedatabase.project.service.TweetService;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +13,8 @@ import twitter4j.Location;
 import twitter4j.TwitterException;
 
 import java.util.List;
-import java.util.Optional;
+
+import static com.advancedatabase.project.util.TweetUtil.getTweetsBySearch;
 
 @Slf4j
 @RestController
@@ -26,19 +28,10 @@ public class TweetController {
         this.tweetService = tweetService;
     }
 
-    @GetMapping(value = "/search")
-    public List<Tweet> search(@RequestParam Optional<String> key) {
-        if ( key.isPresent() ) {
-            return tweetService.findByKeyword(key.get());
-        } else {
-            return tweetService.findTweetGeoNotNull();
-        }
-    }
+    @PostMapping(value = "/search")
+    public List<Tweet> search(@RequestBody(required = false) Search search) {
 
-    @GetMapping(value = "/first") // not necessary
-    public List<Tweet> searchGeoEnabledTweets() {
-
-        return tweetService.findTweetGeoIsNotNull();
+        return getTweetsBySearch(tweetService, search);
 
     }
 
@@ -66,7 +59,7 @@ public class TweetController {
     @PostMapping(value = "/search/{key}/circle")
     public List<Tweet> searchInCircle(@PathVariable String key, @RequestBody Circle circle) {
 
-        return tweetService.findTweetsInCircleAndKey(circle, key);
+        return tweetService.findTweetsInCircleWithTextCriteria(circle, key);
 
     }
 
