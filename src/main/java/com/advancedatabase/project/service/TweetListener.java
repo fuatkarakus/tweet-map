@@ -22,22 +22,22 @@ public class TweetListener implements StatusListener {
 
     @Override
     public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
-
+        // dont need any action
     }
 
     @Override
     public void onTrackLimitationNotice(int i) {
-
+        // dont need any action
     }
 
     @Override
     public void onScrubGeo(long l, long l1) {
-
+        // dont need any action
     }
 
     @Override
     public void onStallWarning(StallWarning stallWarning) {
-
+        // dont need any action
     }
 
     @Override

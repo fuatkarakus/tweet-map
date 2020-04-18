@@ -13,6 +13,7 @@ import twitter4j.Location;
 import twitter4j.TwitterException;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.advancedatabase.project.util.TweetUtil.getTweetsBySearch;
 
@@ -29,9 +30,13 @@ public class TweetController {
     }
 
     @PostMapping(value = "/search")
-    public List<Tweet> search(@RequestBody(required = false) Search search) {
+    public List<Tweet> search(@RequestBody Optional<Search> search) {
 
-        return getTweetsBySearch(tweetService, search);
+        if (search.isPresent()) {
+            return getTweetsBySearch(tweetService, search.get());
+        } else {
+            return tweetService.findTweetGeoNotNull();
+        }
 
     }
 

@@ -11,10 +11,10 @@ import org.springframework.stereotype.Component;
 
 /**
  * Response Time Logger
- * Taken from https://stackoverflow.com/a/42858002/6553042
+ * ref: https://stackoverflow.com/a/42858002/6553042
  */
 @Component
-@WebFilter("/*")
+@WebFilter("/api/*")
 public class StatsFilter implements Filter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StatsFilter.class);
