@@ -1,4 +1,5 @@
-# tweet-map
+# tweet-map 
+[![BCH compliance](https://bettercodehub.com/edge/badge/fuatkarakus/tweet-map?branch=master)](https://bettercodehub.com/)
 
 ![alt text](sss.png)
 This application is capable save Tweets on MongoDb using Twitter API and locates on Google Maps.
